@@ -1,5 +1,9 @@
 <?php
   session_start();
+  if(!isset($_SESSION['login'])){
+    include "Vista/Modulos/login.php"; 
+    return;
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +64,6 @@
     ?>
     <section class="content">
       <?php 
-        if(isset($_SESSION['login']) && $_SESSION['login']== 'activa'){
         // <!-- Navbar -->
         include "Vista/Modulos/nav.php"; 
         //<!-- Main Sidebar Container -->
@@ -79,11 +82,6 @@
         }
         include "Vista/Modulos/footer.php"; 
         echo '</div>';
-      }else{
-        include "Vista/Modulos/login2.php"; 
-      }
-
-      include "Vista/Modulos/login2.php";
       ?>
     </section>
     <!-- /.content -->
@@ -124,7 +122,7 @@
 <script src="Vista/plugins/sweetalert2/sweetalert2.all.js"></script>
 <script src="Vista/plugins/sweetalert2/sweetalert2.min.css"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="Vista/dist/js/demo.js"></script>
+<!-- <script src="Vista/dist/js/demo.js"></script> -->
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="Vista/dist/js/pages/dashboard2.js"></script>
 </body>

@@ -9,29 +9,26 @@
   });
 
   $("#btnEdit").click(function(){
-        var Id_Cliente = $(this).atrr("idCliente");
-        console.log("id" + Id_Cliente);
+    var Id_Cliente = $(this).atrr("idCliente");
+    console.log("id" + Id_Cliente);
 
-        var datos = new FormData();
-        datos.append("idCliente", idCliente);
+    var datos = new FormData();
+    datos.append("idCliente", idCliente);
 
-        $.ajax({
-          url:"ajax/clientes.php",
-          method:"POST",
-          data: datos,
-          cache: false,
-          proccessData: false,
-          dataType: "Json",
-          success: function(respuesta){
-            console.log("respuesta", respuesta);
-            console.log("hi");
-            console.log(datossss);
-
-
-          }
-        })
-
-  })
+    $.ajax({
+      url:"ajax/clientes.php",
+      method:"POST",
+      data: datos,
+      cache: false,
+      proccessData: false,
+      dataType: "Json",
+      success: function(respuesta){
+        console.log("respuesta", respuesta);
+        console.log("hi");
+        console.log(datossss);
+      }
+    })
+  });
 
 </script>
 <div class="card-body">
@@ -130,7 +127,9 @@ echo "
     </form>
 
     <?php
-    $obj_GuardarCliente = new ControladorClientes();
+      $ctrl_cliente = dirname(__DIR__) . "/../Controladores/ctrl_cliente.php";
+      require_once(realpath($ctrl_cliente));
+      $obj_GuardarCliente = new ControladorClientes();
       $obj_GuardarCliente -> ctrlGuardarCliente();
       //foto que tome de foreach
     ?>

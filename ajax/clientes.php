@@ -1,19 +1,12 @@
 <?php
 require_once "Modelo/MdlCliente.php";
-require_once "Controladores/ctrl_cliente.php"
+require_once "Controladores/ctrl_cliente.php";
 class clientes{
-    public $idcliente
-    public function editarAjaxClientes(){
-     
-        $idcliente = $this->idcliente;
-        $respuesta = ModeloClientes ::  mdlObteneracalientes();
-        echo json_encode($respuesta);
-
+    public function editarAjaxClientes($idCliente){
+        echo json_encode(ClienteMdl::mdlObtenerCliente());
     }
+}
 
-    if(isset($_POST["IdCliente"])){
-        $objModficar-> new clientes();
-        $objModificar -> idCliente = $_POST["idCliente"];
-        $objModficar - > editarAjaxClientes();
-    }
+if(isset($_POST["IdCliente"])){
+  $objModficar -> clientes() -> editarAjaxClientes($_POST["idCliente"]);
 }
