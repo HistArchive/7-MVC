@@ -2,34 +2,21 @@
   Registrar
 </button>
 <script>
-  $('#example2 tbody').on('click','btnEdit', function(){
-    var datosss = $(this).closest('tr').find('td');
-    console.log(datosss);
+  $('#tablaClientes tbody').on('click','btnEdit', function(){
+    /*var datosss = $(this).closest('tr').find('td');
+    console.log(datosss);*/
     //var clave = $(this).row('Id_Cliente');
   });
-
+/*
+  Something like this, idk yet since it's ALL JUST A THEORY!
   $("#btnEdit").click(function(){
     var Id_Cliente = $(this).atrr("idCliente");
     console.log("id" + Id_Cliente);
 
     var datos = new FormData();
     datos.append("idCliente", idCliente);
-
-    $.ajax({
-      url:"ajax/clientes.php",
-      method:"POST",
-      data: datos,
-      cache: false,
-      proccessData: false,
-      dataType: "Json",
-      success: function(respuesta){
-        console.log("respuesta", respuesta);
-        console.log("hi");
-        console.log(datossss);
-      }
-    })
   });
-
+*/
 </script>
 <div class="card-body">
 <table id="tablaClientes" class="table table-bordered table-hover">
@@ -60,7 +47,7 @@
         echo '<td>' . $row['id--change'] . '</td>';
         
         echo '<button type="button" class="btn btn-primary btnEdit" data-toggle="modal" data-target="#editarModalCliente">Modificar</button>';
-        echo '<button type="button" class="btn btn-primary" >Eliminar</button>';
+        echo '<button type="button" class="btn btn-primary">Eliminar</button>';
         echo '</tr>';
     }
   ?>
@@ -106,7 +93,6 @@
       require_once(realpath($ctrl_cliente));
       $obj_GuardarCliente = new ControladorClientes();
       $obj_GuardarCliente -> ctrlGuardarCliente();
-      //foto que tome de foreach
     ?>
     </div>
     <!-- /.modal-content -->
@@ -115,6 +101,7 @@
 </div>
 </div>
 
+<!-- Missing addClient Modal -->
 
 <div class="modal fade" id="editarModalCliente">
   <div class="modal-dialog">
