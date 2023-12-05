@@ -1,4 +1,5 @@
 <?php
+if (session_id() == '') {session_start();} 
 class UsuarioCtrl {
     static public function ctrlIngresoUsuario() {
       if (isset($_POST["txt_usuario"]) && isset($_POST["txt_contrasena"])) {
@@ -9,9 +10,9 @@ class UsuarioCtrl {
           $result = UsuarioMdl::mdlMostrarUsuario($_POST["txt_usuario"], $_POST["txt_contrasena"]);
           if ($result && $result["Usuario"] == $_POST["txt_usuario"] && $result["Contrasena"] == $_POST["txt_contrasena"]) {
               $_SESSION["login"] = "activa";
-              echo '<script>window.location="inicio";</script>';
+              $_SESSION['flash_msg'] = '<script>window.location="inicio";</script>';
           } else {
-              echo 'mal';
+            $_SESSION['flash_msg'] = 'Usuario o contraseña incorrecto, por favor verifique su información y vuelva a intentarlo.';
           }
         }
       }

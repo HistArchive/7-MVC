@@ -1,3 +1,4 @@
+<?php if (session_id() == '') {session_start();} ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,6 +50,10 @@
             <!-- /.col -->
           </div>
           <?php
+          if (isset($_SESSION['flash_msg'])) {
+            echo $_SESSION['flash_msg'];
+            unset($_SESSION['flash_msg']);
+          }
             $ctrl_usuario = dirname(__DIR__) . "/../Controladores/ctrl_usuario.php";
             require_once(realpath($ctrl_usuario));
             $obj_login = new UsuarioCtrl();

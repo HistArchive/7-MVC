@@ -79,9 +79,11 @@
             }else{
               include "Vista/Modulos/404.php"; 
             }
-        }
+          } else {
+            include "Vista/Modulos/Inicio.php";
+          }
         include "Vista/Modulos/footer.php"; 
-        echo '</div>';
+        //echo '</div>';
       ?>
     </section>
     <!-- /.content -->
