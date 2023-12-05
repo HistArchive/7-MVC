@@ -116,13 +116,18 @@
 <script src="Vista/plugins/raphael/raphael.min.js"></script>
 <script src="Vista/plugins/jquery-mapael/jquery.mapael.min.js"></script>
 <script src="Vista/plugins/jquery-mapael/maps/usa_states.min.js"></script>
+
 <!-- ChartJS -->
 <script src="Vista/plugins/chart.js/Chart.min.js"></script>
-<!--SWET ALERT-->
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!--SWEET ALERT-->
 <script src="Vista/plugins/sweetalert2/sweetalert2.all.js"></script>
 <script src="Vista/plugins/sweetalert2/sweetalert2.min.css"></script>
-<!-- AdminLTE for demo purposes -->
-<!-- <script src="Vista/dist/js/demo.js"></script> -->
+
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="Vista/dist/js/pages/dashboard2.js"></script>
 </body>

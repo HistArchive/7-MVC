@@ -25,7 +25,10 @@ class ControladorClientes{
       }
     }
   }
-  static public function ctrlMostrarClientes(){
-    return ClienteMdl::mdlObtenerCliente();
+  static public function obtenerClientes(){
+    return json_encode(ClienteMdl::mdlObtenerCliente());
+  }
+  static public function obtenerCliente($idCliente){
+    return json_encode(ClienteMdl::mdlObtenerCliente($idCliente));
   }
 }

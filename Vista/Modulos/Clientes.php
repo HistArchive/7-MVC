@@ -32,64 +32,39 @@
 
 </script>
 <div class="card-body">
-<table id="example2" class="table table-bordered table-hover">
-  <?php
-
-echo "
-<thead>
-<tr>
-    <th>Id_Cliente</th>
-    <th>Nombre</th>
-    <th>Ap. Paterno</th>
-    <th>Ap. Materno</th>
-    <th>Acciones</th>
-  </tr>
+<table id="tablaClientes" class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Id_Cliente</th>
+      <th>Nombre</th>
+      <th>Ap. Paterno</th>
+      <th>Ap. Materno</th>
+      <th>Acciones</th>
+    </tr>
   </thead>
   <tbody>
-  <tr>
-    <td>Trident</td>
-    <td>Internet
-      Explorer 4.0
-    </td>
-    <td>Win 95+</td>
-    <td> 4</td>
-    <td>"
-    ?> 
-      <button type="button" class="btn btn-primary btnEdit" data-toggle="modal" data-target="#editarModalCliente">Modificar</button>
-      <button type="button" class="btn btn-primary" >Eliminar</button>
-    </td>
-  </tr>
-  <tr>
-    <td>Trident</td>
-    <td>Internet
-      Explorer 5.0
-    </td>
-    <td>Win 95+</td>
-    <td>5</td>
-    <td> <button type="button" class="btn btn-primary btnEdit" data-toggle="modal" data-target="#editarModalCliente">Modificar</button>
-  <button type="button" class="btn btn-primary">Eliminar</button></td>
-  </tr>
-  <tr>
-    <td>Trident</td>
-    <td>Internet
-      Explorer 5.5
-    </td>
-    <td>Win 95+</td>
-    <td>5.5</td>
-    <td> <button type="button" class="btn btn-primary btnEdit" data-toggle="modal" data-target="#editarModalCliente">Modificar</button>
-  <button type="button" class="btn btn-primary">Eliminar</button></td>
-  </tr>
-  <tr>
-    <td>Trident</td>
-    <td>Internet
-      Explorer 6
-    </td>
-    <td>Win 98+</td>
-    <td>6</td>
-    <td> <button type="button" class="btn btn-primary btnEdit" data-toggle="modal" data-target="#editarModalCliente">Modificar</button>
-  <button type="button" class="btn btn-primary">Eliminar</button></td>
-  </tr>
-  <tr>
+  <?php
+    // Capture the echoed JSON data using output buffering
+    $ctrl_cliente = dirname(__DIR__) . "/Controladores/ctrl_cliente.php";
+    require_once(realpath($ctrl_cliente));
+
+    $json_data = ControladorClientes::obtenerClientes();
+    
+    // Decode the JSON data into a PHP array
+    $decoded_data = json_decode($json_data, true);
+
+    // Output data in table rows
+    foreach ($data as $row) {
+        echo '<tr>';
+        //Repeat as long as the fields are needed
+        echo '<td>' . $row['id--change'] . '</td>';
+        
+        echo '<button type="button" class="btn btn-primary btnEdit" data-toggle="modal" data-target="#editarModalCliente">Modificar</button>';
+        echo '<button type="button" class="btn btn-primary" >Eliminar</button>';
+        echo '</tr>';
+    }
+  ?>
+  </tbody>
 </table>
                  
 <div class="modal fade" id="modalCliente">
@@ -179,3 +154,8 @@ echo "
   </div>
   <!-- /.modal-dialog -->
 </div>
+<script>
+  $(document).ready(function () {
+    $('#tablaClientes').DataTable();
+  });
+</script>
