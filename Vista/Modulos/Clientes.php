@@ -66,13 +66,13 @@
               <span class="input-group-text">
                 <i class="fas fa-user"></i>
               </span> 
-              <input type="text" class="form-control" name="add_txt_appa">
+              <input type="text" class="form-control" name="add_txt_app">
               </div>
               <div class="input-group-prepend">
                 <span class="input-group-text">
                   <i class="fas fa-user"></i>
                 </span> 
-                <input type="text" class="form-control" name="add_txt_apma">
+                <input type="text" class="form-control" name="add_txt_apm">
               </div>
               <div class="input-group-prepend">
                 <span class="input-group-text">
@@ -91,7 +91,8 @@
       $ctrl_cliente = dirname(__DIR__) . "/../Controladores/ctrl_cliente.php";
       require_once(realpath($ctrl_cliente));
       $obj_GuardarCliente = new ControladorClientes();
-      $obj_GuardarCliente -> ctrlGuardarCliente();
+      $obj_GuardarCliente -> guardarCliente();
+      $obj_GuardarCliente -> actualizarCliente();
     ?>
     </div>
     <!-- /.modal-content -->
@@ -116,19 +117,20 @@
         <span class="input-group-text">
           <i class="fas fa-user"></i>
         </span>
+        <input type="hidden" name="edit_id" id="edit_id">
         <input type="text" class="form-control" name="edit_txt_nombre" id="edit_txt_nombre">
         </div>
         <div class="input-group-prepend">
         <span class="input-group-text">
           <i class="fas fa-user"></i>
         </span> 
-        <input type="text" class="form-control" name="edit_txt_appa" id="edit_txt_appa">
+        <input type="text" class="form-control" name="edit_txt_app" id="edit_txt_app">
         </div>
         <div class="input-group-prepend">
           <span class="input-group-text">
             <i class="fas fa-user"></i>
           </span> 
-          <input type="text" class="form-control" name="edit_txt_apma" id="edit_txt_apma">
+          <input type="text" class="form-control" name="edit_txt_apm" id="edit_txt_apm">
         </div>
         <div class="input-group-prepend">
           <span class="input-group-text">
@@ -176,7 +178,7 @@
             //Currently bugged
             success: function (data) {
                 // Handle the successful response
-                alert('Response from PHP script: ' + JSON.stringify(data));
+                alert(data.message);
             },
             error: function (error) {
                 // Handle the error
@@ -185,20 +187,24 @@
         });
     }
   });
-/*
-  Something like this, idk yet since it's ALL JUST A THEORY!
+  //Something like this, idk yet since it's ALL JUST A THEORY!
   $('.btnEdit').on('click', function () {
     var row = $(this).closest('tr');
-    // Find the value in the "Id_Cliente" column
-    var idCliente = row.find('td:eq(0)').text(); // "Id_Cliente" is in the first column (index 0)
-    var Nombre = row.find('td:eq(1)').text(); // "Nombre" is in the second column (index 1)
+    // Extract data from the row
+    var id = row.find('td:eq(0)').text();  // Assuming id is in the first column
+    var nombre = row.find('td:eq(1)').text();
+    var app = row.find('td:eq(2)').text();
+    var apm = row.find('td:eq(3)').text();
+    var tel = row.find('td:eq(4)').text();
+    
     //fill the form
-    console.log("id: " + Id_Cliente);
-
-    var datos = new FormData();
-    datos.append("idCliente", idCliente);
+    $('#editarModalCliente #edit_id').val(id);
+    $('#editarModalCliente #edit_txt_nombre').val(nombre);
+    $('#editarModalCliente #edit_txt_app').val(app);
+    $('#editarModalCliente #edit_txt_apm').val(apm);
+    $('#editarModalCliente #edit_txt_tel').val(tel);
   });
-*/
+
 </script>
 
 </script>
