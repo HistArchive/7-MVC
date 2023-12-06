@@ -2,9 +2,11 @@
   if (session_id() == '') {
     session_start();
   }
-  if ($_GET['ruta'] == 'logout') {
-    include_once "Vista/Modulos/logout.php"; 
-    return;
+  if (isset($_GET['ruta'])) {
+    if ($_GET['ruta'] == 'logout') {
+      include_once "Vista/Modulos/logout.php"; 
+      return;
+    }
   }
   if(!isset($_SESSION['login'])){
     include "Vista/Modulos/login.php"; 
@@ -18,7 +20,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Leymi Olivares Barreiro</title>
+  <title>Leymi Olivares Barreiro | <?php echo $_SESSION['location'];?></title>
   <!-- REQUIRED SCRIPTS -->
   <!-- jQuery -->
   <script src="Vista/plugins/jquery/jquery.min.js"></script>
@@ -139,9 +141,6 @@
 <!--SWEET ALERT-->
 <script src="Vista/plugins/sweetalert2/sweetalert2.all.js"></script>
 <script src="Vista/plugins/sweetalert2/sweetalert2.min.css"></script>
-
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="Vista/dist/js/pages/dashboard2.js"></script>
 
 </body>
 </html>

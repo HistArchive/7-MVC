@@ -1,10 +1,10 @@
 <?php
 require_once "conexion.php";
 class ClienteMdl {
-    static public function mdlObtenerCliente($parametro = "") {
-        if($parametro != ""){
-            $stmt = Conexion::conectar()->prepare("SELECT * FROM clientes where `id` = :idCliente");
-            $stmt->bindParam(":idCliente",$parametro);
+    static public function obtenerCliente($param = "") {
+        if($param != ""){
+            $stmt = Conexion::conectar()->prepare("SELECT * FROM clientes where `id` = ?");
+            $stmt->bindParam(1,$param);
             $stmt->execute();
             return $stmt -> fetch();
         }else{
@@ -13,26 +13,29 @@ class ClienteMdl {
             return $stmt -> fetchAll();
         }
     }
-    static public function mdlGuardarClientes($datos){
-        $stmt = Conexion::conectar()->prepare("INSERT INTO clientes (`Nombre`, `App`, `Apm`, `Telef`) VALUES (:Nombre, :App, :Apm, :Telef)");
-        $datosArray = array($datos["Nombre"], $datos["App"], $datos["Apm"], $datos["Telef"]);
-        //Changing from individual bindParam to a single Array
+    static public function guardarClientes($datos){
+      $stmt = Conexion::conectar()->prepare("INSERT INTO clientes (`Nombre`, `App`, `Apm`, `Telef`) VALUES (:Nombre, :App, :Apm, :Telef)");
+      $datosArray = array("Nombre" => $datos["Nombre"], "App" => $datos["App"], "Apm" => $datos["Apm"], "Telef" => $datos["Telef"]);
 
-        /*$stmt->bindParam(":Nombre",$datos["Nombre"],PDO::PARAM_STR);
-        $stmt->bindParam(":App",$datos["App"],PDO::PARAM_STR);
-        $stmt->bindParam(":Apm",$datos["Apm"],PDO::PARAM_STR);
-        $stmt->bindParam(":Telef",$datos["Telef"],PDO::PARAM_STR);*/
-
-        if($stmt->execute($datosArray)){
-            return "correcto";   
-        }else{
-            return "error";
+      try{
+        $stmt->execute($datosArray); 
+        return "correcto";   
+      }catch(PDOException $e){
+        return "error: " . $e->getMessage();
+      }
+    }
+    static public function eliminarCliente($id){
+      $stmt = Conexion::conectar()->prepare("DELETE FROM clientes WHERE id = ?");
+      $stmt->bindParam(1,$id);
+      try{
+        $stmt->execute(); 
+        //This needs to be changed, depending on the driver used. For example, this works for MySQL but not for Postgres
+        if ($stmt->rowCount()!=1) {
+          return array("status" => "error", "message" => "this client doesn't exist");
         }
+        return array("status" => "correcto");
+      }catch(PDOException $e){
+          return array("status" => "error", "message" => $e->getMessage());
+      }
     }
 }
-/*if($stmt->execute()){
-            return"correcto";
-        }else{
-            return "incorrecto";
-        }
-        return $stmt -> fetch(); */

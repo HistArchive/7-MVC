@@ -10,7 +10,7 @@ class UsuarioCtrl {
           $result = UsuarioMdl::mdlMostrarUsuario($_POST["txt_usuario"], $_POST["txt_contrasena"]);
           if ($result && $result["Usuario"] == $_POST["txt_usuario"] && $result["Contrasena"] == $_POST["txt_contrasena"]) {
               $_SESSION["login"] = "activa";
-              $_SESSION['user']=$result["Usuario"];
+              $_SESSION['user'] = $result["Usuario"];
               $_SESSION['flash_msg'] = '<script>window.location="Inicio";</script>';
           } else {
             $_SESSION['flash_msg'] = 'Usuario o contraseña incorrecto, por favor verifique su información y vuelva a intentarlo.';

@@ -830,3 +830,6 @@
   </div>
   <!-- /.row -->
 </div><!--/. container-fluid -->
+
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="Vista/dist/js/pages/dashboard2.js"></script>
