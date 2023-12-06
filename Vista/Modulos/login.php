@@ -1,4 +1,10 @@
-<?php if (session_id() == '') {session_start();} ?>
+<?php 
+if (session_id() == '') {session_start();} 
+$ctrl_usuario = dirname(__DIR__) . "/../Controladores/ctrl_usuario.php";
+require_once(realpath($ctrl_usuario));
+$obj_login = new UsuarioCtrl();
+$obj_login -> ctrlIngresoUsuario();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,10 +60,6 @@
             echo $_SESSION['flash_msg'];
             unset($_SESSION['flash_msg']);
           }
-            $ctrl_usuario = dirname(__DIR__) . "/../Controladores/ctrl_usuario.php";
-            require_once(realpath($ctrl_usuario));
-            $obj_login = new UsuarioCtrl();
-            $obj_login -> ctrlIngresoUsuario();
           ?>
         </form>
     </div>
