@@ -2,100 +2,66 @@
   Registrar
 </button>
 <script>
-  $('#example2 tbody').on('click','btnEdit', function(){
-    var datosss = $(this).closest('tr').find('td');
-    console.log(datosss);
+  $('#tablaClientes tbody').on('click','btnEdit', function(){
+    /*var datosss = $(this).closest('tr').find('td');
+    console.log(datosss);*/
     //var clave = $(this).row('Id_Cliente');
   });
-
+/*
+  Something like this, idk yet since it's ALL JUST A THEORY!
   $("#btnEdit").click(function(){
-        var Id_Cliente = $(this).atrr("idCliente");
-        console.log("id" + Id_Cliente);
+    var Id_Cliente = $(this).atrr("idCliente");
+    console.log("id" + Id_Cliente);
 
-        var datos = new FormData();
-        datos.append("idCliente", idCliente);
-
-        $.ajax({
-          url:"ajax/clientes.php",
-          method:"POST",
-          data: datos,
-          cache: false,
-          proccessData: false,
-          dataType: "Json",
-          success: function(respuesta){
-            console.log("respuesta", respuesta);
-            console.log("hi");
-            console.log(datossss);
-
-
-          }
-        })
-
-  })
-
+    var datos = new FormData();
+    datos.append("idCliente", idCliente);
+  });
+*/
 </script>
 <div class="card-body">
-<table id="example2" class="table table-bordered table-hover">
-  <?php
-
-echo "
-<thead>
-<tr>
-    <th>Id_Cliente</th>
-    <th>Nombre</th>
-    <th>Ap. Paterno</th>
-    <th>Ap. Materno</th>
-    <th>Acciones</th>
-  </tr>
+<table id="tablaClientes" class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Id_Cliente</th>
+      <th>Nombre</th>
+      <th>Ap. Paterno</th>
+      <th>Ap. Materno</th>
+      <th>Teléfono</th>
+      <th>Acciones</th>
+    </tr>
   </thead>
   <tbody>
-  <tr>
-    <td>Trident</td>
-    <td>Internet
-      Explorer 4.0
-    </td>
-    <td>Win 95+</td>
-    <td> 4</td>
-    <td>"
-    ?> 
-      <button type="button" class="btn btn-primary btnEdit" data-toggle="modal" data-target="#editarModalCliente">Modificar</button>
-      <button type="button" class="btn btn-primary" >Eliminar</button>
-    </td>
-  </tr>
-  <tr>
-    <td>Trident</td>
-    <td>Internet
-      Explorer 5.0
-    </td>
-    <td>Win 95+</td>
-    <td>5</td>
-    <td> <button type="button" class="btn btn-primary btnEdit" data-toggle="modal" data-target="#editarModalCliente">Modificar</button>
-  <button type="button" class="btn btn-primary">Eliminar</button></td>
-  </tr>
-  <tr>
-    <td>Trident</td>
-    <td>Internet
-      Explorer 5.5
-    </td>
-    <td>Win 95+</td>
-    <td>5.5</td>
-    <td> <button type="button" class="btn btn-primary btnEdit" data-toggle="modal" data-target="#editarModalCliente">Modificar</button>
-  <button type="button" class="btn btn-primary">Eliminar</button></td>
-  </tr>
-  <tr>
-    <td>Trident</td>
-    <td>Internet
-      Explorer 6
-    </td>
-    <td>Win 98+</td>
-    <td>6</td>
-    <td> <button type="button" class="btn btn-primary btnEdit" data-toggle="modal" data-target="#editarModalCliente">Modificar</button>
-  <button type="button" class="btn btn-primary">Eliminar</button></td>
-  </tr>
-  <tr>
+  <?php
+    // Capture the echoed JSON data using output buffering
+    $ctrl_cliente = dirname(__DIR__) . "/../Controladores/ctrl_cliente.php";
+    //echo $ctrl_cliente . " realpath: " . realpath($ctrl_cliente);
+    require_once(realpath($ctrl_cliente));
+
+    $json_data = ControladorClientes::obtenerClientes();
+    
+    // Decode the JSON data into a PHP array
+    $decoded_data = json_decode($json_data, true);
+    
+    // Output data in table rows
+    foreach ($decoded_data as $row) {
+        echo '<tr>';
+        //Repeat as long as the fields are needed
+        echo '<td>' . $row['id'] . '</td>';
+        echo '<td>' . $row['Nombre'] . '</td>';
+        echo '<td>' . $row['App'] . '</td>';
+        echo '<td>' . $row['Apm'] . '</td>';
+        echo '<td>' . $row['Telef'] . '</td>';
+        echo '<td>';
+        echo '<button type="button" class="btn btn-primary btnEdit" data-toggle="modal" data-target="#editarModalCliente">Modificar</button>';
+        echo '<button type="button" class="btn btn-primary">Eliminar</button>';
+        echo '</td>';
+        echo '</tr>';
+    }
+  ?>
+  </tbody>
 </table>
                  
-<div class="modal fade" id="modalCliente">
+<div class="modal fade" id="registrarModalCliente">
   <div class="modal-dialog">
     <div class="modal-content">
       <form method="post" role="form">
@@ -108,19 +74,28 @@ echo "
       <div class="modal-body">
       <div class="input-group">
               <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-user"></i></span><input type="text" class="form-control" data-inputmask-alias="datetime" name="txt_nombre" data-inputmask-inputformat="dd/mm/yyyy" data-mask> 
+              <span class="input-group-text">
+                <i class="fas fa-user"></i>
+              </span>
+              <input type="text" class="form-control" name="add_txt_nombre">
               </div>
               <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-user"></i></span> 
-              <input type="text" class="form-control" data-inputmask-alias="datetime" name="txt_appa" data-inputmask-inputformat="dd/mm/yyyy" data-mask>   
+              <span class="input-group-text">
+                <i class="fas fa-user"></i>
+              </span> 
+              <input type="text" class="form-control" name="add_txt_appa">
               </div>
               <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-user"></i></span> 
-                <input type="text" class="form-control" data-inputmask-alias="datetime" name="txt_apma" data-inputmask-inputformat="dd/mm/yyyy" data-mask>  
+                <span class="input-group-text">
+                  <i class="fas fa-user"></i>
+                </span> 
+                <input type="text" class="form-control" name="add_txt_apma">
               </div>
               <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                <input type="text" class="form-control" data-inputmask-alias="datetime" name="txt_tel" data-inputmask-inputformat="dd/mm/yyyy" data-mask>  
+                <span class="input-group-text">
+                  <i class="fas fa-user"></i>
+                </span>
+                <input type="text" class="form-control" name="add_txt_tel">
               </div>
             </div>
       <div class="modal-footer justify-content-between">
@@ -130,9 +105,10 @@ echo "
     </form>
 
     <?php
-    $obj_GuardarCliente = new ControladorClientes();
+      $ctrl_cliente = dirname(__DIR__) . "/../Controladores/ctrl_cliente.php";
+      require_once(realpath($ctrl_cliente));
+      $obj_GuardarCliente = new ControladorClientes();
       $obj_GuardarCliente -> ctrlGuardarCliente();
-      //foto que tome de foreach
     ?>
     </div>
     <!-- /.modal-content -->
@@ -140,7 +116,6 @@ echo "
   <!-- /.modal-dialog -->
 </div>
 </div>
-
 
 <div class="modal fade" id="editarModalCliente">
   <div class="modal-dialog">
@@ -155,19 +130,28 @@ echo "
       <div class="modal-body">
       <div class="input-group">
         <div class="input-group-prepend">
-        <span class="input-group-text"><i class="fas fa-user"></i></span><input type="text" class="form-control" data-inputmask-alias="datetime" name="txt_nombre" data-inputmask-inputformat="dd/mm/yyyy" data-mask> 
+        <span class="input-group-text">
+          <i class="fas fa-user"></i>
+        </span>
+        <input type="text" class="form-control" name="edit_txt_nombre">
         </div>
         <div class="input-group-prepend">
-        <span class="input-group-text"><i class="fas fa-user"></i></span> 
-        <input type="text" class="form-control" data-inputmask-alias="datetime" name="txt_appa" data-inputmask-inputformat="dd/mm/yyyy" data-mask>   
+        <span class="input-group-text">
+          <i class="fas fa-user"></i>
+        </span> 
+        <input type="text" class="form-control" name="edit_txt_appa">
         </div>
         <div class="input-group-prepend">
-          <span class="input-group-text"><i class="fas fa-user"></i></span> 
-          <input type="text" class="form-control" data-inputmask-alias="datetime" name="txt_apma" data-inputmask-inputformat="dd/mm/yyyy" data-mask>  
+          <span class="input-group-text">
+            <i class="fas fa-user"></i>
+          </span> 
+          <input type="text" class="form-control" name="edit_txt_apma">
         </div>
         <div class="input-group-prepend">
-          <span class="input-group-text"><i class="fas fa-user"></i></span>
-          <input type="text" class="form-control" data-inputmask-alias="datetime" name="txt_tel" data-inputmask-inputformat="dd/mm/yyyy" data-mask>  
+          <span class="input-group-text">
+            <i class="fas fa-user"></i>
+          </span>
+          <input type="text" class="form-control" name="edit_txt_tel">
         </div>
       </div>
       <div class="modal-footer justify-content-between">
@@ -180,3 +164,9 @@ echo "
   </div>
   <!-- /.modal-dialog -->
 </div>
+
+<script>
+  $(document).ready(function () {
+    $('#tablaClientes').DataTable();
+  });
+</script>

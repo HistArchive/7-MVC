@@ -1,5 +1,17 @@
 <?php
-  session_start();
+  if (session_id() == '') {
+    session_start();
+  }
+  if ($_GET['ruta'] == 'logout') {
+    include_once "Vista/Modulos/logout.php"; 
+    return;
+  }
+  if(!isset($_SESSION['login'])){
+    include "Vista/Modulos/login.php"; 
+    return;
+  }
+
+  $_SESSION['location'] = $_GET["ruta"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,17 +34,10 @@
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
  
-
-
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__wobble" src="Vista/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
   </div>
-
-  <!-- Navbar -->
-  
-  <!-- Main Sidebar Container -->
- 
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -41,12 +46,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard v2</h1>
+            <h1 class="m-0"><?php echo $_SESSION['location'];?></h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v2</li>
+              <li class="breadcrumb-item active"><?php echo $_SESSION['location'];?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -60,42 +65,48 @@
     ?>
     <section class="content">
       <?php 
-        if(isset($_SESSION['login']) && $_SESSION['login']== 'activa'){
         // <!-- Navbar -->
         include "Vista/Modulos/nav.php"; 
         //<!-- Main Sidebar Container -->
         include "Vista/Modulos/aside.php";
         //<!-- Listas amigables -->
-        if(isset($_GET["ruta"])){
-            if($_GET["ruta"]=="Inicio" ||
-                $_GET["ruta"]=="Clientes" ||
-                $_GET["ruta"]=="Usuarios" ||
-                $_GET["ruta"]=="Salir"
-            ){
-                include "Vista/Modulos/".$_GET["ruta"].".php";
-            }else{
-              include "Vista/Modulos/404.php"; 
+        if(!isset($_GET["ruta"])){
+          include "Vista/Modulos/Inicio.php";
+        } else{
+          if(
+              $_GET["ruta"]=="Inicio"   ||
+              $_GET["ruta"]=="Clientes" ||
+              $_GET["ruta"]=="Usuario"
+          ){
+            $filename = "Vista/Modulos/".$_GET["ruta"].".php";
+            if (!file_exists($filename)) {
+              // File does not exist, handle accordingly
+              $_SESSION['location'] = '404 Not Found';
+              include "Vista/Modulos/404.html"; 
+            } else {
+              try {
+                // Attempt to include the file
+                include_once($filename);
+                $_SESSION['location'] = $_GET["ruta"];
+              } catch (Exception $e) {
+                // Handle any exceptions that occur during the include
+                $_SESSION['location']='500 Internal Server Error';
+                include "Vista/Modulos/500.html"; 
+                echo 'Caught exception: ', $e->getMessage();
+              }
             }
+          } else {
+            //File isn't whitelisted
+            $_SESSION['location'] = '403 Forbidden';
+            include "Vista/Modulos/403.html"; 
+          }
         }
-        include "Vista/Modulos/footer.php"; 
-        echo '</div>';
-      }else{
-        include "Vista/Modulos/login2.php"; 
-      }
-
-      include "Vista/Modulos/login2.php";
       ?>
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-
+  <?php include "Vista/Modulos/footer.php";  ?>
   <!-- Main Footer -->
   
 </div>
@@ -103,7 +114,6 @@
 <!-- InputMask -->
 <script src="Vista/plugins/moment/moment.min.js"></script>
 <script src="Vista/plugins/inputmask/jquery.inputmask.min.js"></script>
-<!-- <script>  $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })</script> -->
 
 <!-- Bootstrap -->
 <script src="Vista/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -118,14 +128,20 @@
 <script src="Vista/plugins/raphael/raphael.min.js"></script>
 <script src="Vista/plugins/jquery-mapael/jquery.mapael.min.js"></script>
 <script src="Vista/plugins/jquery-mapael/maps/usa_states.min.js"></script>
+
 <!-- ChartJS -->
 <script src="Vista/plugins/chart.js/Chart.min.js"></script>
-<!--SWET ALERT-->
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!--SWEET ALERT-->
 <script src="Vista/plugins/sweetalert2/sweetalert2.all.js"></script>
 <script src="Vista/plugins/sweetalert2/sweetalert2.min.css"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="Vista/dist/js/demo.js"></script>
+
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="Vista/dist/js/pages/dashboard2.js"></script>
+
 </body>
 </html>
