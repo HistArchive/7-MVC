@@ -72,5 +72,4 @@ class ControladorClientes{
   static public function eliminarCliente($idCliente){
     return json_encode(ClienteMdl::eliminarCliente($idCliente));
   }
-
 }
