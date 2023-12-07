@@ -1,23 +1,6 @@
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCliente">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registrarModalCliente">
   Registrar
 </button>
-<script>
-  $('#tablaClientes tbody').on('click','btnEdit', function(){
-    /*var datosss = $(this).closest('tr').find('td');
-    console.log(datosss);*/
-    //var clave = $(this).row('Id_Cliente');
-  });
-/*
-  Something like this, idk yet since it's ALL JUST A THEORY!
-  $("#btnEdit").click(function(){
-    var Id_Cliente = $(this).atrr("idCliente");
-    console.log("id" + Id_Cliente);
-
-    var datos = new FormData();
-    datos.append("idCliente", idCliente);
-  });
-*/
-</script>
 <div class="card-body">
 <table id="tablaClientes" class="table table-bordered table-hover">
   <thead>
@@ -53,7 +36,7 @@
         echo '<td>' . $row['Telef'] . '</td>';
         echo '<td>';
         echo '<button type="button" class="btn btn-primary btnEdit" data-toggle="modal" data-target="#editarModalCliente">Modificar</button>';
-        echo '<button type="button" class="btn btn-primary">Eliminar</button>';
+        echo '<button type="button" class="btn btn-primary btnDelete">Eliminar</button>';
         echo '</td>';
         echo '</tr>';
     }
@@ -83,13 +66,13 @@
               <span class="input-group-text">
                 <i class="fas fa-user"></i>
               </span> 
-              <input type="text" class="form-control" name="add_txt_appa">
+              <input type="text" class="form-control" name="add_txt_app">
               </div>
               <div class="input-group-prepend">
                 <span class="input-group-text">
                   <i class="fas fa-user"></i>
                 </span> 
-                <input type="text" class="form-control" name="add_txt_apma">
+                <input type="text" class="form-control" name="add_txt_apm">
               </div>
               <div class="input-group-prepend">
                 <span class="input-group-text">
@@ -108,7 +91,8 @@
       $ctrl_cliente = dirname(__DIR__) . "/../Controladores/ctrl_cliente.php";
       require_once(realpath($ctrl_cliente));
       $obj_GuardarCliente = new ControladorClientes();
-      $obj_GuardarCliente -> ctrlGuardarCliente();
+      $obj_GuardarCliente -> guardarCliente();
+      $obj_GuardarCliente -> actualizarCliente();
     ?>
     </div>
     <!-- /.modal-content -->
@@ -133,25 +117,26 @@
         <span class="input-group-text">
           <i class="fas fa-user"></i>
         </span>
-        <input type="text" class="form-control" name="edit_txt_nombre">
+        <input type="hidden" name="edit_id" id="edit_id">
+        <input type="text" class="form-control" name="edit_txt_nombre" id="edit_txt_nombre">
         </div>
         <div class="input-group-prepend">
         <span class="input-group-text">
           <i class="fas fa-user"></i>
         </span> 
-        <input type="text" class="form-control" name="edit_txt_appa">
+        <input type="text" class="form-control" name="edit_txt_app" id="edit_txt_app">
         </div>
         <div class="input-group-prepend">
           <span class="input-group-text">
             <i class="fas fa-user"></i>
           </span> 
-          <input type="text" class="form-control" name="edit_txt_apma">
+          <input type="text" class="form-control" name="edit_txt_apm" id="edit_txt_apm">
         </div>
         <div class="input-group-prepend">
           <span class="input-group-text">
             <i class="fas fa-user"></i>
           </span>
-          <input type="text" class="form-control" name="edit_txt_tel">
+          <input type="text" class="form-control" name="edit_txt_tel" id="edit_txt_tel">
         </div>
       </div>
       <div class="modal-footer justify-content-between">
@@ -167,6 +152,58 @@
 
 <script>
   $(document).ready(function () {
-    $('#tablaClientes').DataTable();
+     $('#tablaClientes').DataTable();
+    // Handle click event on "Eliminar" buttons
+    $('.btnDelete').on('click', function () {
+      // Find the closest table row (tr)
+      var row = $(this).closest('tr');
+
+      // Find the value in the "Id_Cliente" column
+      var idCliente = row.find('td:eq(0)').text(); // "Id_Cliente" is in the first column (index 0)
+
+      // Call your function with the obtained idCliente
+      eliminarCliente(idCliente);
+    });
+
+    function eliminarCliente(idCliente) {
+      // You can now use the idCliente as needed
+      var deleteing = confirm("Are you sure you want to delete the user with the ID: " + idCliente + "?");
+      if (!deleteing) {return;}
+      console.log('Deleting client with id: ' + idCliente);
+      $.ajax({
+            url: 'Controladores/ajax/ctrl_cliente.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {idClient: idCliente}, // Include the data to be sent
+            //Currently bugged
+            success: function (data) {
+                // Handle the successful response
+                alert(data.message);
+                if (data.status != "error"){window.location("Clientes");}
+            },
+            error: function (error) {
+                // Handle the error
+                console.error('Error:', error);
+            }
+        });
+    }
   });
+  //Something like this, idk yet since it's ALL JUST A THEORY!
+  $('.btnEdit').on('click', function () {
+    var row = $(this).closest('tr');
+    // Extract data from the row
+    var id = row.find('td:eq(0)').text();  // Assuming id is in the first column
+    var nombre = row.find('td:eq(1)').text();
+    var app = row.find('td:eq(2)').text();
+    var apm = row.find('td:eq(3)').text();
+    var tel = row.find('td:eq(4)').text();
+    
+    //fill the form
+    $('#editarModalCliente #edit_id').val(id);
+    $('#editarModalCliente #edit_txt_nombre').val(nombre);
+    $('#editarModalCliente #edit_txt_app').val(app);
+    $('#editarModalCliente #edit_txt_apm').val(apm);
+    $('#editarModalCliente #edit_txt_tel').val(tel);
+  });
+
 </script>
