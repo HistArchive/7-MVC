@@ -179,6 +179,7 @@
             success: function (data) {
                 // Handle the successful response
                 alert(data.message);
+                if (data.status != "error"){window.location("Clientes");}
             },
             error: function (error) {
                 // Handle the error

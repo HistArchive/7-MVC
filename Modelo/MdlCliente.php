@@ -40,11 +40,11 @@ class ClienteMdl {
         $stmt->execute(); 
         //This needs to be changed, depending on the driver used. For example, this works for MySQL but not for Postgres
         if ($stmt->rowCount()!=1) {
-          echo json_encode(array("status" => "error", "message" => "This client doesn't exist"));
+          return array("status" => "error", "message" => "This client doesn't exist");
         }
-        echo json_encode(array("status" => "correcto"));
+        return array("status" => "correcto", "message" => "All good!");
       }catch(PDOException $e){
-          echo json_encode(array("status" => "error", "message" => $e->getMessage()));
+        return array("status" => "error", "message" => $e->getMessage());
       }
     }
 }
