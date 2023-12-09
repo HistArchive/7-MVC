@@ -51,7 +51,7 @@ $obj_login -> ctrlIngresoUsuario();
           <div class="row">
             <!-- /.col -->
             <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block" style="margin-left:120%; margin-bottom: 20%;">Sign In</button>
             </div>
             <!-- /.col -->
           </div>
