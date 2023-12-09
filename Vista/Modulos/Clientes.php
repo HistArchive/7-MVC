@@ -197,7 +197,6 @@
                 // Handle the error
                 alert('An error has ocurred, please wait a few minutes and try again.');
                 console.error('Error deleting client:', error.statusText);
-                console.error("Response: " , error.responseText);
             }
         });
     }
