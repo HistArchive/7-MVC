@@ -9,8 +9,8 @@ class ControladorClientes{
     //Add a new client
     if(isset($_POST["add_txt_nombre"])){
       if(preg_match('/^[a-zA-Z0-9ñÑáéióúÁÉÍÓÚ]+$/',$_POST["add_txt_nombre"]) && 
-        preg_match('/^[a-zA-Z0-9ñÑáéióúÁÉÍÓÚ]+$/',$_POST["add_txt_app"])    && 
-        preg_match('/^[a-zA-Z0-9ñÑáéióúÁÉÍÓÚ]+$/',$_POST["add_txt_apm"])    &&
+        preg_match('/^[a-zA-Z0-9ñÑáéióúÁÉÍÓÚ]+$/',$_POST["add_txt_app"])     && 
+        preg_match('/^[a-zA-Z0-9ñÑáéióúÁÉÍÓÚ]+$/',$_POST["add_txt_apm"])     &&
         preg_match('/^[0-9]+$/',$_POST["add_txt_tel"])){
         //accion correcta
         //var_dump($_POST["txt_nombre"]);

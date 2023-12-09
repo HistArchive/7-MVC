@@ -19,14 +19,12 @@
     $ctrl_cliente = dirname(__DIR__) . "/../Controladores/ctrl_cliente.php";
     //echo $ctrl_cliente . " realpath: " . realpath($ctrl_cliente);
     require_once(realpath($ctrl_cliente));
-
-    $json_data = ControladorClientes::obtenerClientes();
     
     // Decode the JSON data into a PHP array
-    $decoded_data = json_decode($json_data, true);
+    $data = json_decode(ControladorClientes::obtenerClientes(), true);
     
     // Output data in table rows
-    foreach ($decoded_data as $row) {
+    foreach ($data as $row) {
         echo '<tr>';
         //Repeat as long as the fields are needed
         echo '<td>' . $row['id'] . '</td>';
@@ -179,7 +177,7 @@
             success: function (data) {
                 // Handle the successful response
                 alert(data.message);
-                if (data.status != "error"){window.location("Clientes");}
+                if (data.status != "error"){window.location="Clientes";}
             },
             error: function (error) {
                 // Handle the error

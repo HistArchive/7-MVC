@@ -35,7 +35,7 @@ class ClienteMdl {
     }
     static public function eliminarCliente($id){
       $stmt = Conexion::conectar()->prepare("DELETE FROM clientes WHERE id = ?");
-      $stmt->bindParam(1,$id);
+      $stmt->bindParam(1, $id);
       try{
         $stmt->execute(); 
         //This needs to be changed, depending on the driver used. For example, this works for MySQL but not for Postgres
