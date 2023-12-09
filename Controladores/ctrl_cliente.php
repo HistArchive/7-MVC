@@ -70,6 +70,7 @@ class ControladorClientes{
     return json_encode(ClienteMdl::obtenerCliente($idCliente));
   }
   static public function eliminarCliente($idCliente){
+    header('Content-Type: application/json');
     return json_encode(ClienteMdl::eliminarCliente($idCliente));
   }
 }
