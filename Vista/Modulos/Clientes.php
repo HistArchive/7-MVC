@@ -173,7 +173,6 @@
             type: 'POST',
             dataType: 'json',
             data: {idClient: idCliente}, // Include the data to be sent
-            //Currently bugged
             success: function (data) {
                 // Handle the successful response
                 alert(data.message);
