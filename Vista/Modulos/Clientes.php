@@ -17,14 +17,27 @@
   <?php
     // Capture the echoed JSON data using output buffering
     $ctrl_cliente = dirname(__DIR__) . "/../Controladores/ctrl_cliente.php";
-    //echo $ctrl_cliente . " realpath: " . realpath($ctrl_cliente);
     require_once(realpath($ctrl_cliente));
     
     // Decode the JSON data into a PHP array
     $data = json_decode(ControladorClientes::obtenerClientes(), true);
-    
-    // Output data in table rows
-    foreach ($data as $row) {
+    if (isset($data['error']) || $data == NULL){
+      echo '<div style="width: 100%;
+      margin: 0 auto; 
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      border-radius: 5px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">';
+      echo isset($data) ? htmlspecialchars($data['error']) : "Internal Server Error";
+      echo '</div>';   
+    } else {
+      // Output data in table rows
+      foreach ($data as $row) {
+        if (isset($row['err'])) {
+          break;
+        }
         echo '<tr>';
         //Repeat as long as the fields are needed
         echo '<td>' . $row['id'] . '</td>';
@@ -37,6 +50,7 @@
         echo '<button type="button" class="btn btn-primary btnDelete">Eliminar</button>';
         echo '</td>';
         echo '</tr>';
+      }
     }
   ?>
   </tbody>
@@ -103,45 +117,46 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <form method="post" role="form">
-      <div class="modal-header">
-        <h4 class="modal-title">Editar Cliente</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      <div class="input-group">
-        <div class="input-group-prepend">
-        <span class="input-group-text">
-          <i class="fas fa-user"></i>
-        </span>
-        <input type="hidden" name="edit_id" id="edit_id">
-        <input type="text" class="form-control" name="edit_txt_nombre" id="edit_txt_nombre">
+        <div class="modal-header">
+          <h4 class="modal-title">Editar Cliente</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <div class="input-group-prepend">
-        <span class="input-group-text">
-          <i class="fas fa-user"></i>
-        </span> 
-        <input type="text" class="form-control" name="edit_txt_app" id="edit_txt_app">
+        <div class="modal-body">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-user"></i>
+              </span>
+              <input type="hidden" name="edit_id" id="edit_id">
+              <input type="text" class="form-control" name="edit_txt_nombre" id="edit_txt_nombre">
+            </div>
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-user"></i>
+              </span> 
+              <input type="text" class="form-control" name="edit_txt_app" id="edit_txt_app">
+            </div>
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-user"></i>
+              </span> 
+              <input type="text" class="form-control" name="edit_txt_apm" id="edit_txt_apm">
+            </div>
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-user"></i>
+              </span>
+              <input type="text" class="form-control" name="edit_txt_tel" id="edit_txt_tel">
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
         </div>
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <i class="fas fa-user"></i>
-          </span> 
-          <input type="text" class="form-control" name="edit_txt_apm" id="edit_txt_apm">
-        </div>
-        <div class="input-group-prepend">
-          <span class="input-group-text">
-            <i class="fas fa-user"></i>
-          </span>
-          <input type="text" class="form-control" name="edit_txt_tel" id="edit_txt_tel">
-        </div>
-      </div>
-      <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-      </div>
-    </form>
+      </form>
     </div>
     <!-- /.modal-content -->
   </div>
@@ -180,12 +195,14 @@
             },
             error: function (error) {
                 // Handle the error
-                console.error('Error:', error);
+                alert('An error has ocurred, please wait a few minutes and try again.');
+                console.error('Error deleting client:', error.statusText);
+                console.error("Response: " , error.responseText);
             }
         });
     }
   });
-  //Something like this, idk yet since it's ALL JUST A THEORY!
+
   $('.btnEdit').on('click', function () {
     var row = $(this).closest('tr');
     // Extract data from the row
@@ -195,7 +212,7 @@
     var apm = row.find('td:eq(3)').text();
     var tel = row.find('td:eq(4)').text();
     
-    //fill the form
+    // Fill the form
     $('#editarModalCliente #edit_id').val(id);
     $('#editarModalCliente #edit_txt_nombre').val(nombre);
     $('#editarModalCliente #edit_txt_app').val(app);
