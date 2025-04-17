@@ -5,6 +5,6 @@ Why not open source it, right? Yep. If used at all, pls tag us somewhere:D (mayb
 Since no one is going to work on it, might as well archive it, right? 
 Out it goes!
 # MVC
-This fucking sucks but whatever, it works.
+An MVC done by hand
 ### For issues, check the Issues tab
 ### For the progress, check the projects tab
